@@ -11,4 +11,19 @@ function makeRows(rows, cols) {
     };
 };
 
+function Paint() {
+    const gridItems = document.querySelectorAll('#container > div');
+
+    gridItems.forEach((item) => {
+        //item.count = 0;
+        item.addEventListener('mouseenter', (e) => {
+            e.target.style.backgroundColor = 'black';
+            //e.target.style.opacity = 1;
+            console.log("blackbox");
+        });
+    });
+}
+
 makeRows(16, 16)
+Paint()
+ 
