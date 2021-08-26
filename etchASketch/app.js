@@ -1,6 +1,7 @@
 const container = document.getElementById("container");
 let rows = 0;
 let cols = 0;
+let cell = [];
 //clear
 const resetButton = document.querySelector('#clear-screen');
 resetButton.addEventListener('click', ClearAll);
@@ -10,47 +11,50 @@ const newGrid = document.querySelector('#new-grid');
 newGrid.addEventListener('click', function(){
     rows = prompt('How Many Rows ?');
     cols = prompt('How Many Columns ?');
+    console.log(rows);
+    console.log(cols);
     ClearAll();
-    makeRows(rows, cols);
+    createGrid(rows, cols);
 })
 
 
-function makeRows(rows, cols) {
-    container.style.setProperty('--grid-rows', rows);
-    container.style.setProperty('--grid-cols', cols);
+function createGrid(rows,cols) {
+    removeCells();
+    container.style.gridTemplateColumns = (`repeat(${rows}, 1fr`);
+    container.style.gridTemplateRows = (`repeat(${cols}, 1fr`);
+    let numberOfCells = rows * cols;
+    for (let i =0; i < numberOfCells; i++) {
+        console.log ('cell')
+        cell[i] = document.createElement('div');
+        cell[i].classList.add('cell');
+        cell[i].innerText = i;
+        cell[i].addEventListener('mouseenter', Paint)
+        container.appendChild(cell[i]);
+    }
 
-    for (i = 0; i < (rows * cols); i++) {
-        let cell = document.createElement("div");
-        //cell.innerText = (i + 1);
-        container.appendChild(cell).className = "grid-cell"
-    };
-};
+}
 
-function Paint() {
-    const gridItems = document.querySelectorAll('#container > div');
+function removeCells() {
+    while(container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  }
 
-    gridItems.forEach((item) => {
-        //item.count = 0;
-        item.addEventListener('mouseover', (e) => {
-            e.target.style.backgroundColor = 'black';
-            //e.target.style.opacity = 1;
-            //console.log("blackbox");
-        });
-    });
+function Paint(e) {
+    e.target.style.backgroundColor = 'black';
+
 }
 
 function ClearAll () {
-    const gridItems = document.querySelectorAll('#container > div');
-
-    gridItems.forEach((item) => {
+    cell.forEach(item => {
+        item.style = 'background-color: rgba(255, 255, 255, 1)';
+        item.removeEventListener('mouseenter', Paint);
         //console.log('clearing...')
-        item.style = 'background-color: white';
 
     })
 }
 
 
-makeRows(16, 16)
-Paint()
+createGrid(16,16)
 
  
